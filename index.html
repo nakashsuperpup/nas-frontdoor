@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="NAS is an invite-only study app for students — record lectures, live transcription, smart notes. Ask Nakash for a code.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Ctext%20y%3D%27.9em%27%20font-size%3D%2788%27%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<title>NAS — ask for a student code</title>
+<style>
+  :root{
+    --cream:#F4EEDF; --paper:#FEFDF8; --paper-2:#FBF3E2; --ink:#1B1526; --ink-2:#5c5470; --ink-3:#948aa8; --rule:#e6dcc7;
+    --grape:#8A3DC6; --coral:#F1663F; --moo:#14BCD1; --marigold:#F4B62C; --meadow:#5FBE44; --oink:#E22C8E; --sky:#63C6E8; --bubble:#F58ABF; --lav:#B79AEC;
+    --line:#1B1526;
+    --sans:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{--cream:#161022;--paper:#211836;--paper-2:#1b1330;--ink:#f3ecff;--ink-2:#b9addb;--ink-3:#8579a6;--rule:#33254d;--line:#0d0a15}}
+  :root[data-theme="dark"]{--cream:#161022;--paper:#211836;--paper-2:#1b1330;--ink:#f3ecff;--ink-2:#b9addb;--ink-3:#8579a6;--rule:#33254d;--line:#0d0a15}
+  :root[data-theme="light"]{--cream:#F4EEDF;--paper:#FEFDF8;--paper-2:#FBF3E2;--ink:#1B1526;--ink-2:#5c5470;--ink-3:#948aa8;--rule:#e6dcc7;--line:#1B1526}
+
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background-image:
+      radial-gradient(720px 520px at 88% -8%, rgba(138,61,198,.16), transparent 60%),
+      radial-gradient(640px 520px at -6% 12%, rgba(20,188,209,.14), transparent 58%),
+      radial-gradient(680px 560px at 50% 116%, rgba(244,182,44,.12), transparent 62%);}
+  .lines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+    background:linear-gradient(var(--rule) 1px,transparent 1px);background-size:100% 34px}
+  .wrap{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:20px clamp(16px,5vw,34px) 60px}
+
+  /* ---------- top bar ---------- */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0 4px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .nas{position:relative;display:inline-flex;font-weight:900;letter-spacing:-.03em;line-height:.8;font-size:38px}
+  .nas .l{position:relative;z-index:2;-webkit-text-stroke:2.4px var(--line);paint-order:stroke fill;text-shadow:3px 3px 0 var(--line)}
+  .nas .n{color:var(--grape)} .nas .a{color:var(--coral)} .nas .s{color:var(--moo)}
+  .nas .hl{position:absolute;left:-8%;right:-8%;top:34%;height:46%;z-index:1;border-radius:6px;
+    background:linear-gradient(90deg,rgba(244,182,44,0),var(--marigold) 10%,var(--marigold) 90%,rgba(244,182,44,0));
+    transform:scaleX(0);transform-origin:left center;opacity:.85;mix-blend-mode:multiply}
+  @media (prefers-reduced-motion:no-preference){.nas .hl{animation:swipe 4.6s cubic-bezier(.7,0,.3,1) infinite;animation-delay:.6s}
+    @keyframes swipe{0%{transform:scaleX(0)}26%{transform:scaleX(1)}72%{transform:scaleX(1);opacity:.85}86%{opacity:0}86.01%{transform:scaleX(0);opacity:0}100%{transform:scaleX(0);opacity:.85}}}
+  @media (prefers-reduced-motion:reduce){.nas .hl{transform:scaleX(1)}}
+  .byn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-3)}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-2);border:1.5px solid var(--rule);border-radius:30px;padding:6px 13px;background:var(--paper)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;text-align:center;padding:44px 0 20px}
+  .glow{position:absolute;z-index:0;width:min(560px,86vw);height:340px;left:50%;top:34%;transform:translate(-50%,-50%);
+    border-radius:50%;pointer-events:none;filter:blur(40px);
+    background:radial-gradient(circle,rgba(138,61,198,.30),rgba(183,154,236,.14) 48%,transparent 72%)}
+  @media (prefers-reduced-motion:no-preference){.glow{animation:glowpulse 7s ease-in-out infinite}
+    @keyframes glowpulse{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.92)}50%{opacity:.95;transform:translate(-50%,-50%) scale(1.08)}}}
+  .kick{position:relative;z-index:2;display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:13px;letter-spacing:.03em;
+    color:var(--grape);background:var(--paper);border:2px solid var(--line);border-radius:30px;padding:8px 16px;box-shadow:3px 3px 0 var(--line)}
+  h1{position:relative;z-index:2;margin:20px auto 0;font-weight:900;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(42px,10vw,82px);max-width:14ch;text-wrap:balance}
+  h1 .u{position:relative;white-space:nowrap;color:var(--grape)}
+  h1 .u::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.06em;height:.16em;background:var(--marigold);border-radius:6px;z-index:-1}
+  .sub{position:relative;z-index:2;margin:20px auto 0;font-size:clamp(16px,2.4vw,19px);line-height:1.55;color:var(--ink-2);max-width:46ch;text-wrap:pretty}
+  .sub b{color:var(--ink)}
+  .cta{position:relative;z-index:2;margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{font-family:inherit;font-weight:800;font-size:16px;padding:15px 24px;border:2.5px solid var(--line);border-radius:16px;cursor:pointer;
+    text-decoration:none;display:inline-flex;align-items:center;gap:9px;box-shadow:5px 5px 0 var(--line);transition:transform .1s,box-shadow .1s}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--line)}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
+  .btn:focus-visible{outline:none;box-shadow:5px 5px 0 var(--line),0 0 0 4px rgba(138,61,198,.28)}
+  .btn.primary{background:var(--grape);color:#fff}
+  .btn.ghost{background:var(--paper);color:var(--ink)}
+
+  /* floating folk-art creatures */
+  .float{position:absolute;z-index:1;pointer-events:none;filter:drop-shadow(3px 3px 0 rgba(27,21,38,.16))}
+  .float svg{display:block}
+  .f-cow{width:104px;left:-6px;top:6px}
+  .f-frog{width:70px;right:2px;top:22px}
+  .f-flower{width:52px;right:14%;top:-6px}
+  .f-eye{width:40px;left:16%;top:-12px}
+  @media (prefers-reduced-motion:no-preference){
+    .float{animation:bob 6s ease-in-out infinite}
+    .f-frog{animation-delay:.8s}.f-flower{animation-delay:1.6s}.f-eye{animation-delay:2.3s}
+    @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}}
+  @media (max-width:640px){.f-flower,.f-eye{display:none}.f-cow{width:74px}.f-frog{width:52px}}
+
+  /* pulsing lavender lights divider */
+  .lights{display:flex;align-items:center;justify-content:center;gap:14px;margin:40px 0 8px}
+  .lights .dot{width:10px;height:10px;border-radius:50%;background:var(--lav);box-shadow:0 0 12px 1px rgba(183,154,236,.85)}
+  @media (prefers-reduced-motion:no-preference){.lights .dot{animation:lav 1.9s ease-in-out infinite}
+    .lights .dot:nth-child(2){animation-delay:.4s}.lights .dot:nth-child(3){animation-delay:.8s}.lights .dot:nth-child(4){animation-delay:1.2s}
+    @keyframes lav{0%,100%{opacity:.3;transform:scale(.75)}50%{opacity:1;transform:scale(1.2)}}}
+
+  /* ---------- section heads ---------- */
+  .eyebrow{text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  h2{text-align:center;font-weight:900;font-size:clamp(26px,5vw,38px);letter-spacing:-.02em;margin:0 auto;text-wrap:balance}
+
+  /* ---------- feature cards ---------- */
+  .cards{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+  .card{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;box-shadow:6px 6px 0 var(--line);padding:22px 20px;transition:transform .12s,box-shadow .12s}
+  .card:hover{transform:translate(-2px,-2px) rotate(-.6deg);box-shadow:8px 8px 0 var(--line)}
+  .card .ico{width:52px;height:52px;display:grid;place-items:center;border-radius:14px;border:2.5px solid var(--line);font-size:26px;margin-bottom:12px}
+  .card h3{margin:0;font-weight:900;font-size:19px;letter-spacing:-.01em}
+  .card p{margin:7px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+  .c1 .ico{background:var(--coral)}.c2 .ico{background:var(--moo)}.c3 .ico{background:var(--marigold)}.c4 .ico{background:var(--bubble)}
+
+  /* ---------- steps ---------- */
+  .steps{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .step{position:relative;background:var(--paper-2);border:2.5px solid var(--line);border-radius:20px;padding:22px 20px 20px}
+  .step .num{position:absolute;top:-16px;left:18px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;
+    background:var(--grape);color:#fff;font-weight:900;font-size:17px;border:2.5px solid var(--line);box-shadow:2px 2px 0 var(--line)}
+  .step h3{margin:8px 0 0;font-weight:900;font-size:17px}
+  .step p{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--ink-2)}
+  .step code{font-family:var(--mono);font-weight:700;background:var(--paper);border:1.5px solid var(--rule);border-radius:6px;padding:1px 6px;font-size:13px;color:var(--grape)}
+
+  /* ---------- big ask ---------- */
+  .ask{position:relative;margin-top:48px;text-align:center;background:var(--paper);border:3px solid var(--line);border-radius:28px;
+    box-shadow:10px 10px 0 var(--line);padding:44px clamp(22px,5vw,44px)}
+  .ask h2{max-width:18ch}
+  .ask p{margin:14px auto 0;font-size:16px;line-height:1.55;color:var(--ink-2);max-width:44ch}
+  .mail{margin:22px 0 0;display:inline-flex;align-items:center;gap:0;border:2.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:3px 3px 0 var(--line);max-width:100%}
+  .mail .addr{font-family:var(--mono);font-size:14px;font-weight:700;padding:12px 14px;color:var(--ink);background:var(--paper-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mail button{font-family:inherit;font-weight:800;font-size:13px;padding:12px 15px;border:0;border-left:2.5px solid var(--line);background:var(--marigold);color:var(--ink);cursor:pointer;white-space:nowrap}
+  .mail button:active{background:var(--coral)}
+  .have{margin:26px 0 0;font-size:13.5px;color:var(--ink-3)}
+  .have b{color:var(--ink-2)}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:46px;text-align:center}
+  .names{display:inline-flex;align-items:center;justify-content:center;gap:11px;flex-wrap:wrap;font-weight:800;font-size:13px;color:var(--ink-2)}
+  .names .d{width:8px;height:8px;border-radius:50%;background:var(--lav);box-shadow:0 0 9px 1px rgba(183,154,236,.8)}
+  @media (prefers-reduced-motion:no-preference){.names .d{animation:lav 2.1s ease-in-out infinite}.names .d:nth-of-type(2){animation-delay:.7s}}
+  .fnote{margin:12px 0 0;font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+
+  /* wandering 8-bit pup */
+  .wanderpup{position:fixed;z-index:1;bottom:20px;left:14px;pointer-events:none;filter:drop-shadow(2px 2px 0 rgba(27,21,38,.2))}
+  .wanderpup svg{image-rendering:pixelated;display:block}
+  @media (prefers-reduced-motion:no-preference){.wanderpup{animation:wander 34s ease-in-out infinite}
+    @keyframes wander{0%{transform:translate(0,0) scaleX(1)}18%{transform:translate(80vw,-2vh) scaleX(1)}20%{transform:translate(80vw,-2vh) scaleX(-1)}
+      50%{transform:translate(8vw,-6vh) scaleX(-1)}52%{transform:translate(8vw,-6vh) scaleX(1)}82%{transform:translate(82vw,-9vh) scaleX(1)}84%{transform:translate(82vw,-9vh) scaleX(-1)}100%{transform:translate(0,0) scaleX(-1)}}}
+</style>
+</head>
+<body>
+
+
+<div class="lines"></div>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="nas"><span class="hl"></span><span class="l n">n</span><span class="l a">a</span><span class="l s">s</span></div>
+      <span class="byn">by nakash 🐾</span>
+    </div>
+    <span class="pill">🔒 students only</span>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="glow"></div>
+
+    <!-- floating folk-art -->
+    <div class="float f-cow" aria-hidden="true"><svg viewBox="0 0 120 108">
+      <ellipse cx="24" cy="46" rx="13" ry="9" fill="#F58ABF" stroke="#1B1526" stroke-width="4.5" transform="rotate(-32 24 46)"/>
+      <ellipse cx="96" cy="46" rx="13" ry="9" fill="#F58ABF" stroke="#1B1526" stroke-width="4.5" transform="rotate(32 96 46)"/>
+      <path d="M42 26 q-8 -16 -18 -15 q8 6 9 18 z" fill="#F4B62C" stroke="#1B1526" stroke-width="3.5"/>
+      <path d="M78 26 q8 -16 18 -15 q-8 6 -9 18 z" fill="#F4B62C" stroke="#1B1526" stroke-width="3.5"/>
+      <ellipse cx="60" cy="60" rx="38" ry="34" fill="#FEFDF8" stroke="#1B1526" stroke-width="5"/>
+      <path d="M32 42 q11 -7 15 6 q-6 11 -17 4 z" fill="#1B1526"/>
+      <circle cx="83" cy="46" r="8.5" fill="#1B1526"/>
+      <circle cx="48" cy="55" r="5.5" fill="#1B1526"/><circle cx="72" cy="55" r="5.5" fill="#1B1526"/>
+      <ellipse cx="60" cy="79" rx="22" ry="16" fill="#F1A9C9" stroke="#1B1526" stroke-width="4.5"/>
+      <ellipse cx="52" cy="79" rx="3.4" ry="5.2" fill="#1B1526"/><ellipse cx="68" cy="79" rx="3.4" ry="5.2" fill="#1B1526"/>
+    </svg></div>
+
+    <div class="float f-frog" aria-hidden="true"><svg viewBox="0 0 100 96">
+      <circle cx="30" cy="30" r="14" fill="#5FBE44" stroke="#1B1526" stroke-width="4.5"/>
+      <circle cx="70" cy="30" r="14" fill="#5FBE44" stroke="#1B1526" stroke-width="4.5"/>
+      <circle cx="30" cy="30" r="5" fill="#1B1526"/><circle cx="70" cy="30" r="5" fill="#1B1526"/>
+      <ellipse cx="50" cy="60" rx="35" ry="30" fill="#5FBE44" stroke="#1B1526" stroke-width="4.5"/>
+      <path d="M32 64 q18 14 36 0" fill="none" stroke="#1B1526" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="34" cy="60" r="4" fill="#F58ABF" opacity=".7"/><circle cx="66" cy="60" r="4" fill="#F58ABF" opacity=".7"/>
+    </svg></div>
+
+    <div class="float f-flower" aria-hidden="true"><svg viewBox="0 0 80 80">
+      <g stroke="#1B1526" stroke-width="4">
+        <circle cx="40" cy="18" r="12" fill="#E22C8E"/><circle cx="62" cy="34" r="12" fill="#F4B62C"/>
+        <circle cx="54" cy="60" r="12" fill="#63C6E8"/><circle cx="26" cy="60" r="12" fill="#8A3DC6"/><circle cx="18" cy="34" r="12" fill="#F1663F"/>
+      </g>
+      <circle cx="40" cy="40" r="12" fill="#FEFDF8" stroke="#1B1526" stroke-width="4"/>
+    </svg></div>
+
+    <div class="float f-eye" aria-hidden="true"><svg viewBox="0 0 70 50">
+      <ellipse cx="35" cy="25" rx="32" ry="20" fill="#FEFDF8" stroke="#1B1526" stroke-width="4.5"/>
+      <circle cx="35" cy="25" r="11" fill="#14BCD1" stroke="#1B1526" stroke-width="3.5"/><circle cx="35" cy="25" r="4.5" fill="#1B1526"/>
+    </svg></div>
+
+    <span class="kick">🐮 psst — you found the door</span>
+    <h1>NAS is <span class="u">invite&#8209;only.</span></h1>
+    <p class="sub">NAS is the study buddy that <b>records your lectures</b>, <b>transcribes them live</b>, and turns the mess into <b>clean, organized notes</b> — plus Study+ superpowers. It's handed out to students <b>one code at a time.</b> Want one?</p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:nakashsuperpup@gmail.com?subject=NAS%20student%20code%20request&body=Hi%20Nakash%2C%0A%0AI%27d%20love%20a%20NAS%20student%20code.%0A%0AI%27m%20a%20student%20at%20________%20studying%20________.%0A%0AThank%20you!">✏️ Ask for a code</a>
+      <a class="btn ghost" href="#what">See what it does ↓</a>
+    </div>
+  </section>
+
+  <div class="lights" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+
+  <!-- ================= WHAT ================= -->
+  <section id="what" style="margin-top:34px">
+    <p class="eyebrow">what you're getting into</p>
+    <h2>A quieter way to ace class.</h2>
+    <div class="cards">
+      <div class="card c1"><div class="ico">🎙️</div><h3>Record the lecture</h3><p>Hit record and just listen. NAS holds onto every word so you don't have to scramble.</p></div>
+      <div class="card c2"><div class="ico">✍️</div><h3>Live transcription</h3><p>Watch the words appear as your professor talks — in class, in real time.</p></div>
+      <div class="card c3"><div class="ico">📓</div><h3>Smart notes</h3><p>The transcript becomes tidy, organized notes you can actually study from later.</p></div>
+      <div class="card c4"><div class="ico">✨</div><h3>Study+</h3><p>The good stuff — the extras that turn your notes into a real study set. Unlocked with your code.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= HOW ================= -->
+  <section style="margin-top:52px">
+    <p class="eyebrow">how to get in</p>
+    <h2>Three steps. That's it.</h2>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h3>Ask Nakash</h3><p>Send a quick note asking for a student code. Tell us where you study — that's all.</p></div>
+      <div class="step"><span class="num">2</span><h3>Get your code</h3><p>Nakash hands you a code that looks like <code>STUDY-XXXXX</code>. One code, one student, just for you.</p></div>
+      <div class="step"><span class="num">3</span><h3>Unlock everything</h3><p>Type it into NAS and the whole thing opens up — recording, transcripts, notes, Study+.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= ASK ================= -->
+  <section class="ask">
+    <p class="eyebrow">the door</p>
+    <h2>Want in? Just ask. 🐾</h2>
+    <p>Codes are handed out personally, one at a time — so it stays a small, real community of students. Send a note and you'll hear back.</p>
+    <div class="cta" style="margin-top:24px">
+      <a class="btn primary" href="mailto:nakashsuperpup@gmail.com?subject=NAS%20student%20code%20request&body=Hi%20Nakash%2C%0A%0AI%27d%20love%20a%20NAS%20student%20code.%0A%0AI%27m%20a%20student%20at%20________%20studying%20________.%0A%0AThank%20you!">✏️ Ask for a code</a>
+    </div>
+    <div class="mail">
+      <span class="addr" id="addr">nakashsuperpup@gmail.com</span>
+      <button id="copy" type="button">copy</button>
+    </div>
+    <p class="have"><b>Already have a code?</b> Open your NAS app and type it into the gate — you're already in. 🔓</p>
+  </section>
+
+  <footer>
+    <div class="names">🐾 NAS <span class="d"></span> Nahdri <span class="d"></span> Akash <span class="d"></span> Sprinkles</div>
+    <p class="fnote">made with folk-art &amp; care · nakash</p>
+  </footer>
+</div>
+
+<div class="wanderpup" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="50" height="50" shape-rendering="crispEdges" role="img" aria-label="Nakash">
+<rect x="0" y="0" width="1" height="1" fill="#38154f"/><rect x="0" y="1" width="1" height="1" fill="#38154f"/><rect x="0" y="2" width="1" height="1" fill="#38154f"/><rect x="0" y="3" width="1" height="1" fill="#38154f"/><rect x="0" y="4" width="1" height="1" fill="#38154f"/><rect x="0" y="5" width="1" height="1" fill="#38154f"/><rect x="0" y="6" width="1" height="1" fill="#38154f"/><rect x="0" y="7" width="1" height="1" fill="#38154f"/><rect x="0" y="8" width="1" height="1" fill="#38154f"/><rect x="0" y="9" width="1" height="1" fill="#38154f"/><rect x="1" y="0" width="1" height="1" fill="#38154f"/><rect x="1" y="9" width="1" height="1" fill="#38154f"/><rect x="1" y="10" width="1" height="1" fill="#38154f"/><rect x="2" y="0" width="1" height="1" fill="#38154f"/><rect x="2" y="10" width="1" height="1" fill="#38154f"/><rect x="2" y="11" width="1" height="1" fill="#38154f"/><rect x="3" y="0" width="1" height="1" fill="#38154f"/><rect x="3" y="1" width="1" height="1" fill="#38154f"/><rect x="3" y="11" width="1" height="1" fill="#38154f"/><rect x="4" y="1" width="1" height="1" fill="#38154f"/><rect x="4" y="11" width="1" height="1" fill="#38154f"/><rect x="5" y="1" width="1" height="1" fill="#38154f"/><rect x="5" y="2" width="1" height="1" fill="#38154f"/><rect x="5" y="10" width="1" height="1" fill="#38154f"/><rect x="5" y="11" width="1" height="1" fill="#38154f"/><rect x="6" y="1" width="1" height="1" fill="#38154f"/><rect x="6" y="2" width="1" height="1" fill="#38154f"/><rect x="6" y="10" width="1" height="1" fill="#38154f"/><rect x="6" y="11" width="1" height="1" fill="#38154f"/><rect x="7" y="1" width="1" height="1" fill="#38154f"/><rect x="7" y="11" width="1" height="1" fill="#38154f"/><rect x="8" y="0" width="1" height="1" fill="#38154f"/><rect x="8" y="1" width="1" height="1" fill="#38154f"/><rect x="8" y="11" width="1" height="1" fill="#38154f"/><rect x="9" y="0" width="1" height="1" fill="#38154f"/><rect x="9" y="10" width="1" height="1" fill="#38154f"/><rect x="9" y="11" width="1" height="1" fill="#38154f"/><rect x="10" y="0" width="1" height="1" fill="#38154f"/><rect x="10" y="9" width="1" height="1" fill="#38154f"/><rect x="10" y="10" width="1" height="1" fill="#38154f"/><rect x="11" y="0" width="1" height="1" fill="#38154f"/><rect x="11" y="1" width="1" height="1" fill="#38154f"/><rect x="11" y="2" width="1" height="1" fill="#38154f"/><rect x="11" y="3" width="1" height="1" fill="#38154f"/><rect x="11" y="4" width="1" height="1" fill="#38154f"/><rect x="11" y="5" width="1" height="1" fill="#38154f"/><rect x="11" y="6" width="1" height="1" fill="#38154f"/><rect x="11" y="7" width="1" height="1" fill="#38154f"/><rect x="11" y="8" width="1" height="1" fill="#38154f"/><rect x="11" y="9" width="1" height="1" fill="#38154f"/><rect x="1" y="1" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="1" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="1" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="1" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="2" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="6" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="3" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="6" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="4" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="5" width="1" height="1" fill="#1B1526"/><rect x="4" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="6" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="5" width="1" height="1" fill="#1B1526"/><rect x="9" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="5" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="6" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="6" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="7" width="1" height="1" fill="#1B1526"/><rect x="6" y="7" width="1" height="1" fill="#1B1526"/><rect x="7" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="7" width="1" height="1" fill="#8A3DC6"/><rect x="1" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="8" width="1" height="1" fill="#F58ABF"/><rect x="6" y="8" width="1" height="1" fill="#F58ABF"/><rect x="7" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="10" y="8" width="1" height="1" fill="#8A3DC6"/><rect x="2" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="5" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="6" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="9" y="9" width="1" height="1" fill="#8A3DC6"/><rect x="3" y="10" width="1" height="1" fill="#8A3DC6"/><rect x="4" y="10" width="1" height="1" fill="#8A3DC6"/><rect x="7" y="10" width="1" height="1" fill="#8A3DC6"/><rect x="8" y="10" width="1" height="1" fill="#8A3DC6"/>
+</svg></div>
+
+<script>
+  var copyBtn=document.getElementById('copy');
+  if(copyBtn){copyBtn.addEventListener('click',function(){
+    var addr=document.getElementById('addr').textContent.trim();
+    var done=function(){copyBtn.textContent='copied ✓';setTimeout(function(){copyBtn.textContent='copy';},1600);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(addr).then(done,done);}else{done();}
+  });}
+</script>
+
+</body>
+</html>
